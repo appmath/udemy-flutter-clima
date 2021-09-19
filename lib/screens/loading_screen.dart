@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:untitled/screens/location_screen.dart';
 import 'package:untitled/services/location.dart';
+import 'package:http/http.dart';
+import 'package:untitled/services/networking.dart';
+import 'package:untitled/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -8,38 +14,33 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  WeatherModel weatherModel = WeatherModel();
+
+  @override
+  void initState() {
+    super.initState();
+    getLocationData();
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Called build');
 
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            getLocation();
-            //Get the current location
-          },
-          child: Text('Get Location'),
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
         ),
       ),
     );
   }
 
-  void getLocation() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    print('Latitude: ${location.latitude}');
-    print('Longitude: ${location.longitude}');
-  }
+  void getLocationData() async {
+    var weatherData = await weatherModel.getLocationWeather();
 
-  @override
-  void initState() {
-    print('Called initState');
-  }
-  .
-
-  @override
-  void deactivate() {
-    print('Called deactivate');
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(locationWeather: weatherData);
+    }));
   }
 }
