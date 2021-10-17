@@ -8,10 +8,6 @@ const String openWeatherMapUrl =
 
 class WeatherModel {
   Future<dynamic> getCityWeather(String cityName) async {
-    print('CityName: $cityName');
-
-    // var url = '$openWeatherMapUrl?q=$cityName&appid=$apiKey';
-
     var url =
         'https://samples.openweathermap.org/data/2.5/weather?q=paris&appid=2061398c1aaf3aea76467243c2f4f2f8';
 
